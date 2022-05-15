@@ -8,6 +8,7 @@ jobs:
   ci:
     name: CI
     uses: ./.github/workflows/default.yml
+    secrets: inherit
 
   dev:
     name: Deploy
