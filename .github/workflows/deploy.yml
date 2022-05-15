@@ -6,9 +6,9 @@ on:
 
 jobs:
   ci:
+    name: CI
     runs-on: ubuntu-20.04
-    steps:
-      - uses: ./.github/workflows/default.yml
+    uses: ./.github/workflows/default.yml
 
   dev:
     name: Deploy
