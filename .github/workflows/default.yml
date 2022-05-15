@@ -54,11 +54,11 @@ jobs:
       - name: Run Tests
         run: npm run test -- --coverage
 
-      - name: Run Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
+      - uses: actions/upload-artifact@v3
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage/lcov.info
+          name: test
+          path: coverage/lcov.info
+          retention-days: 1
 
   lint:
     name: Lint
@@ -76,26 +76,45 @@ jobs:
       - name: Download dependencies
         run: npm ci
 
-      - run: npm run lint
+      - run: npm run lint -- -f json -o lint/eslint-report.json
 
-  codacy:
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lint
+          path: lint/eslint-report.json
+          retention-days: 1
+
+  sonar:
     name: Static Code Analysis
     runs-on: ubuntu-20.04
+    needs: [lint, test]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@4.0.2
+      - name: Download Test Artifacts
+        uses: actions/download-artifact@v3
         with:
-          output: results.sarif
-          format: sarif
-          gh-code-scanning-compat: true
-          max-allowed-issues: 2147483647
+          name: test
       
-      - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@main
+      - name: Download Lint Artifacts
+        uses: actions/download-artifact@v3
         with:
-          sarif_file: results.sarif
+          name: lint
+
+      - name: Update lint paths
+        run: sed -i 's+/home/runner/work/controle-academia/controle-academia/*++g' eslint-report.json
+
+      - name: Run SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
