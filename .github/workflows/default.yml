@@ -1,5 +1,7 @@
 on:
   pull_request:
+    branches:
+      - develop
 
 jobs:
   
@@ -13,7 +15,16 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
-      - run: echo test Works!
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm run test
+
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm run lint
 
 
 
