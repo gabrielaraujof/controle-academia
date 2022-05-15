@@ -7,7 +7,6 @@ on:
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-20.04
     uses: ./.github/workflows/default.yml
 
   dev:
