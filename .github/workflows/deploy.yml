@@ -13,6 +13,6 @@ jobs:
   dev:
     name: Deploy
     runs-on: ubuntu-20.04
-    needs: [build]
+    needs: [ci]
     steps:
       - run: echo Works!
