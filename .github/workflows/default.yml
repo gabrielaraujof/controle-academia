@@ -1,0 +1,16 @@
+on:
+  pull_request:
+
+jobs:
+  
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo build Works!
+
+
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo test Works!
+
