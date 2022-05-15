@@ -54,11 +54,10 @@ jobs:
       - name: Run Tests
         run: npm run test -- --coverage
 
-      - name: Run Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
+      - uses: actions/upload-artifact@v3
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage/lcov.info
+          name: test
+          path: coverage/lcov.info
 
   lint:
     name: Lint
@@ -78,7 +77,12 @@ jobs:
 
       - run: npm run lint -- -f json -o lint/eslint-analysis.json
 
-  codacy:
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lint
+          path: lint/eslint-analysis.json
+
+  sonar:
     name: Static Code Analysis
     runs-on: ubuntu-20.04
     needs: [lint, test]
@@ -87,6 +91,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Download Test Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: test
+      
+      - name: Download Lint Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: lint
 
       - name: Run SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v1.6
