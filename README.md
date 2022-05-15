@@ -1,5 +1,11 @@
 # Controle Academia
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
