@@ -1,30 +1,101 @@
+name: Continuous Integration
+
 on:
   pull_request:
     branches:
-      - develop
+      - main
+  workflow_call:
 
 jobs:
   
   build:
+    name: Build
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node: [ 16, 18 ]
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci 
-      - run: npm run build
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setting Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Download Dependencies
+        run: npm ci 
+
+      - name: Build and Bundle Assets
+        run: npm run build
 
   test:
+    name: Test
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node: [ 16, 18 ]
+    env:
+      CI: true
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci
-      - run: npm run test
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setting Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Download Dependencies
+        run: npm ci 
+
+      - name: Run Tests
+        run: npm run test -- --coverage
+
+      - name: Run Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage/lcov.info
 
   lint:
+    name: Lint
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setting Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Download dependencies
+        run: npm ci
+
       - run: npm run lint
 
+  codacy:
+    name: Static Code Analysis
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@4.0.2
+        with:
+          output: results.sarif
+          format: sarif
+          gh-code-scanning-compat: true
+          max-allowed-issues: 2147483647
+      
+      - name: Upload SARIF results file
+        uses: github/codeql-action/upload-sarif@main
+        with:
+          sarif_file: results.sarif
