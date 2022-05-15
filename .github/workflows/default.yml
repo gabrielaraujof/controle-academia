@@ -58,6 +58,7 @@ jobs:
         with:
           name: test
           path: coverage/lcov.info
+          retention-days: 1
 
   lint:
     name: Lint
@@ -75,12 +76,13 @@ jobs:
       - name: Download dependencies
         run: npm ci
 
-      - run: npm run lint -- -f json -o lint/eslint-analysis.json
+      - run: npm run lint -- -f json -o lint/eslint-report.json
 
       - uses: actions/upload-artifact@v3
         with:
           name: lint
-          path: lint/eslint-analysis.json
+          path: lint/eslint-report.json
+          retention-days: 1
 
   sonar:
     name: Static Code Analysis
@@ -101,6 +103,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: lint
+
+      - name: Update lint paths
+        run: sed -i 's+/home/runner/work/controle-academia/controle-academia/*++g' eslint-report.json
 
       - name: Run SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v1.6
