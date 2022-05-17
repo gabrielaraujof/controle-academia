@@ -20,6 +20,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-16
+          path: build
 
       - name: Publish to netlify
         uses: netlify/actions/cli@master
