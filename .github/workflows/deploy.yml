@@ -25,7 +25,8 @@ jobs:
           name: build-16
           path: build
 
-      - name: Publish to netlify
+      - id: netlify
+        name: Publish to netlify
         uses: netlify/actions/cli@master
         with:
           args: deploy --dir=build --alias=staging --message "Deploy from Github Action"
@@ -47,7 +48,8 @@ jobs:
           name: build-16
           path: build
 
-      - name: Publish to netlify
+      - id: netlify
+        name: Publish to netlify
         uses: netlify/actions/cli@master
         with:
           args: deploy --dir=build --prod --message "Deploy from Github Action"
