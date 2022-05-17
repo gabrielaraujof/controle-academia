@@ -11,10 +11,11 @@ jobs:
     secrets: inherit
     permissions: write-all
 
-  dev:
+  staging:
     name: Staging Deploy
     runs-on: ubuntu-20.04
     needs: [ci]
+    environment: stg
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -26,6 +27,26 @@ jobs:
         uses: netlify/actions/cli@master
         with:
           args: deploy --dir=build --alias=staging --message "Deploy from Github Action"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+  production:
+    name: Staging Deploy
+    runs-on: ubuntu-20.04
+    needs: [staging]
+    environment: prd
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-16
+          path: build
+
+      - name: Publish to netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=build --prod --message "Deploy from Github Action"
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
