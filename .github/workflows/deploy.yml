@@ -40,7 +40,7 @@ jobs:
     needs: [staging]
     environment:
       name: prd
-      url: http://academia.gabrielaraujo.dev
+      url: https://academia.gabrielaraujo.dev
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -48,8 +48,7 @@ jobs:
           name: build-16
           path: build
 
-      - id: netlify
-        name: Publish to netlify
+      - name: Publish to netlify
         uses: netlify/actions/cli@master
         with:
           args: deploy --dir=build --prod --message "Deploy from Github Action"
