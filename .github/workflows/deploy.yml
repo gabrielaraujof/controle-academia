@@ -15,7 +15,9 @@ jobs:
     name: Staging Deploy
     runs-on: ubuntu-20.04
     needs: [ci]
-    environment: stg
+    environment:
+      name: stg
+      url: ${{ steps.netlify.outputs.NETLIFY_URL }}
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -32,10 +34,12 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
   production:
-    name: Staging Deploy
+    name: Production Deploy
     runs-on: ubuntu-20.04
     needs: [staging]
-    environment: prd
+    environment:
+      name: prd
+      url: http://academia.gabrielaraujo.dev
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
