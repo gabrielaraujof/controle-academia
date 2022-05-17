@@ -30,6 +30,12 @@ jobs:
       - name: Build and Bundle Assets
         run: npm run build
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-{{ matrix.node }}
+          path: build/
+
+
   test:
     name: Test
     runs-on: ubuntu-20.04

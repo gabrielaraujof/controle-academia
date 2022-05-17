@@ -1,6 +1,6 @@
 # Controle Academia
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/13b5c817-deb1-409e-8e26-8dc04e246e1e/deploy-status)](https://app.netlify.com/sites/gyn/deploys)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gabrielaraujof_controle-academia&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=gabrielaraujof_controle-academia)
